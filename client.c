@@ -18,9 +18,15 @@
 #include <unistd.h>
 
 static volatile sig_atomic_t em_execucao = 1;
-static void ao_receber_sigint(int sinal){ (void)sinal; em_execucao = 0; }
+static void ao_receber_sigint(int sinal) { 
+  (void)sinal; 
+  em_execucao = 0; 
+}
 
-static void erro_fatal(const char *mensagem){ perror(mensagem); exit(EXIT_FAILURE); }
+static void erro_fatal(const char *mensagem) {
+  perror(mensagem);
+  exit(EXIT_FAILURE);
+}
 
 static int enviar_tudo(int socket_fd, const char *buffer, size_t tamanho) {
   size_t enviado = 0;
@@ -51,7 +57,10 @@ int main(int argc, char **argv) {
   dicas.ai_socktype = SOCK_STREAM;
 
   int erro = getaddrinfo(endereco_host, porta, &dicas, &resultado);
-  if (erro) { fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(erro)); return EXIT_FAILURE; }
+  if (erro) {
+    fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(erro));
+    return EXIT_FAILURE;
+  }
 
   int socket_fd = -1;
   for (struct addrinfo *ptr = resultado; ptr; ptr = ptr->ai_next) {
