@@ -104,6 +104,10 @@ int main(int argc, char **argv) {
         perror("send");
         break;
       }
+
+      printf("você: %s", linha);
+      if (!tem_nova_linha) printf("\n");
+      fflush(stdout);
     }
 
     if (FD_ISSET(socket_fd, &conjunto_leitura)) {
@@ -114,8 +118,11 @@ int main(int argc, char **argv) {
         break;
       }
       buffer_recebido[bytes_recebidos] = '\0';
-      fputs(buffer_recebido, stdout);
-      fflush(stdout);
+
+      if (strncmp(buffer_recebido, prefixo, (size_t)tamanho_prefixo) != 0) {
+        fputs(buffer_recebido, stdout);
+        fflush(stdout);
+      }
     }
   }
 
